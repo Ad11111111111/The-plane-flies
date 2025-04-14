@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>המטוס טס</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        html::-webkit-scrollbar, body::-webkit-scrollbar {
+            display: none;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%);
+            color: #e0e0e0;
+            position: relative;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .space-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: url('https://www.transparenttextures.com/patterns/stardust.png'), linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%);
+            background-size: 200% 200%;
+            overflow: hidden;
+            animation: panBackground 60s linear infinite;
+        }
+
+        .stars-layer-1,
+        .stars-layer-2,
+        .stars-layer-3,
+        .comet-layer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+        }
+
+        .stars-layer-1::before,
+        .stars-layer-1::after {
+            content: '';
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            background: #ffffff;
+            opacity: 0.8;
+            box-shadow: 
+                5vw 10vh 0 #ffffff, 15vw 20vh 0 #ffffff, 25vw 30vh 0 #ffffff, 35vw 40vh 0 #ffffff, 45vw 50vh 0 #ffffff,
+                55vw 60vh 0 #ffffff, 65vw 70vh 0 #ffffff, 75vw 80vh 0 #ffffff, 85vw 90vh 0 #ffffff, 95vw 100vh 0 #ffffff,
+                10vw 15vh 0 #e0e0ff, 20vw 25vh 0 #e0e0ff, 30vw 35vh 0 #e0e0ff, 40vw 45vh 0 #e0e0ff, 50vw 55vh 0 #e0e0ff,
+                60vw 65vh 0 #e0e0ff, 70vw 75vh 0 #e0e0ff, 80vw 85vh 0 #e0e0ff, 90vw 95vh 0 #e0e0ff, 100vw 5vh 0 #e0e0ff;
+            animation: moveStarsFast 20s linear infinite, twinkle 1.5s ease-in-out infinite;
+        }
+
+        .stars-layer-1::after {
+            animation-delay: -10s;
+            box-shadow: 
+                8vw 12vh 0 #ffffff, 18vw 22vh 0 #ffffff, 28vw 32vh 0 #ffffff, 38vw 42vh 0 #ffffff, 48vw 52vh 0 #ffffff,
+                58vw 62vh 0 #ffffff, 68vw 72vh 0 #ffffff, 78vw 82vh 0 #ffffff, 88vw 92vh 0 #ffffff, 98vw 2vh 0 #ffffff,
+                12vw 18vh 0 #e0e0ff, 22vw 28vh 0 #e0e0ff, 32vw 38vh 0 #e0e0ff, 42vw 48vh 0 #e0e0ff, 52vw 58vh 0 #e0e0ff,
+                62vw 68vh 0 #e0e0ff, 72vw 78vh 0 #e0e0ff, 82vw 88vh 0 #e0e0ff, 92vw 98vh 0 #e0e0ff, 2vw 8vh 0 #e0e0ff;
+        }
+
+        .stars-layer-2::before,
+        .stars-layer-2::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #ffffff;
+            opacity: 0.6;
+            box-shadow: 
+                3vw 5vh 0 #ffffff, 13vw 15vh 0 #ffffff, 23vw 25vh 0 #ffffff, 33vw 35vh 0 #ffffff, 43vw 45vh 0 #ffffff,
+                53vw 55vh 0 #ffffff, 63vw 65vh 0 #ffffff, 73vw 75vh 0 #ffffff, 83vw 85vh 0 #ffffff, 93vw 95vh 0 #ffffff,
+                7vw 10vh 0 #ffffe0, 17vw 20vh 0 #ffffe0, 27vw 30vh 0 #ffffe0, 37vw 40vh 0 #ffffe0, 47vw 50vh 0 #ffffe0,
+                57vw 60vh 0 #ffffe0, 67vw 70vh 0 #ffffe0, 77vw 80vh 0 #ffffe0, 87vw 90vh 0 #ffffe0, 97vw 100vh 0 #ffffe0;
+            animation: moveStarsMedium 40s linear infinite, twinkle 2s ease-in-out infinite;
+        }
+
+        .stars-layer-2::after {
+            animation-delay: -20s;
+            box-shadow: 
+                6vw 8vh 0 #ffffff, 16vw 18vh 0 #ffffff, 26vw 28vh 0 #ffffff, 36vw 38vh 0 #ffffff, 46vw 48vh 0 #ffffff,
+                56vw 58vh 0 #ffffff, 66vw 68vh 0 #ffffff, 76vw 78vh 0 #ffffff, 86vw 88vh 0 #ffffff, 96vw 98vh 0 #ffffff,
+                9vw 12vh 0 #ffffe0, 19vw 22vh 0 #ffffe0, 29vw 32vh 0 #ffffe0, 39vw 42vh 0 #ffffe0, 49vw 52vh 0 #ffffe0,
+                59vw 62vh 0 #ffffe0, 69vw 72vh 0 #ffffe0, 79vw 82vh 0 #ffffe0, 89vw 92vh 0 #ffffe0, 99vw 2vh 0 #ffffe0;
+        }
+
+        .stars-layer-3::before,
+        .stars-layer-3::after {
+            content: '';
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #ffffff;
+            opacity: 0.4;
+            box-shadow: 
+                2vw 3vh 0 #ffffff, 12vw 13vh 0 #ffffff, 22vw 23vh 0 #ffffff, 32vw 33vh 0 #ffffff, 42vw 43vh 0 #ffffff,
+                52vw 53vh 0 #ffffff, 62vw 63vh 0 #ffffff, 72vw 73vh 0 #ffffff, 82vw 83vh 0 #ffffff, 92vw 93vh 0 #ffffff,
+                4vw 6vh 0 #e0e0ff, 14vw 16vh 0 #e0e0ff, 24vw 26vh 0 #e0e0ff, 34vw 36vh 0 #e0e0ff, 44vw 46vh 0 #e0e0ff,
+                54vw 56vh 0 #e0e0ff, 64vw 66vh 0 #e0e0ff, 74vw 76vh 0 #e0e0ff, 84vw 86vh 0 #e0e0ff, 94vw 96vh 0 #e0e0ff;
+            animation: moveStarsSlow 60s linear infinite, twinkle 2.5s ease-in-out infinite;
+        }
+
+        .stars-layer-3::after {
+            animation-delay: -30s;
+            box-shadow: 
+                1vw 4vh 0 #ffffff, 11vw 14vh 0 #ffffff, 21vw 24vh 0 #ffffff, 31vw 34vh 0 #ffffff, 41vw 44vh 0 #ffffff,
+                51vw 54vh 0 #ffffff, 61vw 64vh 0 #ffffff, 71vw 74vh 0 #ffffff, 81vw 84vh 0 #ffffff, 91vw 94vh 0 #ffffff,
+                3vw 7vh 0 #e0e0ff, 13vw 17vh 0 #e0e0ff, 23vw 27vh 0 #e0e0ff, 33vw 37vh 0 #e0e0ff, 43vw 47vh 0 #e0e0ff,
+                53vw 57vh 0 #e0e0ff, 63vw 67vh 0 #e0e0ff, 73vw 77vh 0 #e0e0ff, 83vw 87vh 0 #e0e0ff, 93vw 97vh 0 #e0e0ff;
+        }
+
+        .comet-layer::before {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #00d4ff, #ffffff);
+            box-shadow: 0 0 10px #00d4ff, 0 0 20px #00d4ff;
+            animation: comet 15s linear infinite;
+        }
+
+        .comet-layer::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #ff4d4d, #ffffff);
+            box-shadow: 0 0 10px #ff4d4d, 0 0 20px #ff4d4d;
+            animation: comet 20s linear infinite;
+            animation-delay: -10s;
+        }
+
+        @keyframes panBackground {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        @keyframes moveStarsFast {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(-150vw) translateY(150vh); }
+        }
+
+        @keyframes moveStarsMedium {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(-100vw) translateY(100vh); }
+        }
+
+        @keyframes moveStarsSlow {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(-50vw) translateY(50vh); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes comet {
+            0% { transform: translateX(100vw) translateY(-10vh); opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { transform: translateX(-50vw) translateY(110vh); opacity: 0; }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc; }
+            50% { box-shadow: 0 0 15px #00ffcc, 0 0 30px #00ffcc; }
+            100% { box-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc; }
+        }
+
+        .menu-container {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .mode-selection, .division-selection {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px #00d4ff;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00d4ff;
+            text-shadow: 0 0 10px #00d4ff, 0 0 20px #00d4ff;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        .map-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .input-container {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        #countryInput {
+            padding: 10px;
+            width: 200px;
+            font-size: 16px;
+            direction: rtl;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #00d4ff;
+            border-radius: 5px;
+            color: #e0e0e0;
+            box-shadow: 0 0 10px #00d4ff;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        #countryInput::placeholder {
+            text-align: center;
+        }
+
+        #countryInput:focus {
+            outline: none;
+            box-shadow: 0 0 15px #00d4ff, 0 0 25px #00d4ff;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        #message {
+            color: #ff4d4d;
+            margin-top: 10px;
+            text-shadow: 0 0 5px #ff4d4d;
+            font-size: 1.1em;
+            text-align: center;
+        }
+
+        .country-label {
+            position: absolute;
+            font-size: 12px;
+            color: #e0e0e0;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 3px 6px;
+            border-radius: 3px;
+            text-shadow: 0 0 5px #00d4ff;
+            box-shadow: 0 0 8px #00d4ff;
+            cursor: pointer;
+            transition: transform 0.3s ease, background 0.3s ease, font-size 0.3s ease, font-weight 0.3s ease;
+            text-align: center;
+            opacity: 0.7;
+        }
+
+        .country-label:hover {
+            transform: scale(1.1);
+            opacity: 1;
+        }
+
+        .country-label.selected {
+            background: #00ffcc;
+            color: #000;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 0 15px #00ffcc, 0 0 25px #00ffcc;
+            animation: pulse 2s ease-in-out infinite;
+            opacity: 1;
+            text-shadow: none;
+        }
+
+        .country-label.team-east, .country-label.team-south {
+            background: rgba(255, 99, 71, 0.8);
+            text-shadow: 0 0 5px #ff6347;
+            box-shadow: 0 0 8px #ff6347;
+        }
+
+        .country-label.team-west, .country-label.team-north {
+            background: rgba(135, 206, 250, 0.8);
+            text-shadow: 0 0 5px #87cefa;
+            box-shadow: 0 0 8px #87cefa;
+        }
+
+        .country-label.on-fire {
+            color: #ff4500 !important;
+            text-shadow: 0 0 5px #ff4500 !important;
+        }
+
+        .country-label .fire-emoji {
+            margin-left: 5px;
+        }
+
+        .country-list {
+            margin: 20px auto;
+            border: 2px solid #00d4ff;
+            border-radius: 10px;
+            padding: 10px;
+            width: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 15px #00d4ff;
+        }
+
+        .country-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 8px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s ease, transform 0.3s ease;
+            text-align: center;
+            gap: 10px;
+        }
+
+        .country-item:hover {
+            background: rgba(0, 212, 255, 0.2);
+            transform: translateX(-5px);
+        }
+
+        .country-item.selected {
+            background: rgba(0, 212, 255, 0.4);
+            box-shadow: 0 0 10px #00d4ff;
+        }
+
+        .country-item.team-east, .country-item.team-south {
+            background: rgba(255, 99, 71, 0.2);
+        }
+
+        .country-item.team-west, .country-item.team-north {
+            background: rgba(135, 206, 250, 0.2);
+        }
+
+        .country-item span.on-fire {
+            color: #ff4500 !important;
+            text-shadow: 0 0 5px #ff4500 !important;
+        }
+
+        .country-item span.fire-emoji {
+            margin-left: 5px;
+        }
+
+        .action-buttons {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            color: #e0e0e0;
+            background: linear-gradient(45deg, #00d4ff, #007bff);
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 0 10px #00d4ff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        button:hover {
+            background: linear-gradient(45deg, #007bff, #00d4ff);
+            box-shadow: 0 0 15px #00d4ff, 0 0 25px #00d4ff;
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            background: linear-gradient(45deg, #4d4d4d, #333);
+            box-shadow: none;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .eliminated {
+            text-decoration: line-through;
+            color: #ff4d4d !important;
+            text-shadow: 0 0 5px #ff4d4d;
+        }
+
+        @media (max-width: 600px) {
+            .map-container, .country-list, .input-container, .action-buttons {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            #countryInput {
+                width: 150px;
+            }
+
+            button {
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+        }
+
+        .game-footer {
+            margin-top: 40px;
+            width: 100%;
+            padding: 20px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-top: 2px solid #00d4ff;
+            box-shadow: 0 -5px 15px rgba(0, 212, 255, 0.3);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-content p {
+            font-family: 'Poppins', sans-serif;
+            color: #e0e0e0;
+            text-shadow: 0 0 5px #00d4ff;
+            font-size: 1em;
+        }
+
+        .footer-content button {
+            padding: 8px 16px;
+            font-size: 12px;
+        }
+
+        .footer-attribution {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .footer-attribution p {
+            font-family: 'Poppins', sans-serif;
+            color: #e0e0e0;
+            text-shadow: 0 0 5px #00d4ff;
+            font-size: 0.9em;
+        }
+
+        .footer-attribution p a {
+            color: #00d4ff;
+            text-decoration: none;
+            text-shadow: 0 0 5px #00d4ff;
+            transition: color 0.3s ease;
+        }
+
+        .footer-attribution p a:hover {
+            color: #00ffcc;
+            text-shadow: 0 0 10px #00ffcc;
+        }
+
+        @media (max-width: 600px) {
+            .footer-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .footer-content p {
+                font-size: 0.9em;
+            }
+
+            .footer-content button {
+                padding: 6px 12px;
+                font-size: 10px;
+            }
+
+            .footer-attribution p {
+                font-size: 0.8em;
+            }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1b263b 0%, #0d1b2a 100%);
+            border: 2px solid #00d4ff;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 0 20px #00d4ff, 0 0 40px #00d4ff;
+            position: relative;
+            color: #e0e0e0;
+            text-align: center;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            color: #ff4d4d;
+            cursor: pointer;
+            text-shadow: 0 0 5px #ff4d4d;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: #ff7878;
+        }
+
+        .modal-content h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00d4ff;
+            text-shadow: 0 0 10px #00d4ff;
+            margin-bottom: 20px;
+        }
+
+        .rules-content {
+            margin: 20px 0;
+        }
+
+        .rules-image {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #00d4ff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px #00d4ff;
+        }
+
+        .image-attribution {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #e0e0e0;
+            text-align: center;
+        }
+
+        .image-attribution a {
+            color: #00d4ff;
+            text-decoration: none;
+            text-shadow: 0 0 5px #00d4ff;
+            transition: color 0.3s ease;
+        }
+
+        .image-attribution a:hover {
+            color: #00ffcc;
+            text-shadow: 0 0 10px #00ffcc;
+        }
+
+        @media (max-width: 600px) {
+            .modal-content {
+                padding: 15px;
+                max-width: 350px;
+            }
+
+            .modal-content h2 {
+                font-size: 1.5em;
+            }
+
+            .image-attribution {
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="space-bg">
+        <div class="stars-layer-1"></div>
+        <div class="stars-layer-2"></div>
+        <div class="stars-layer-3"></div>
+        <div class="comet-layer"></div>
+    </div>
+
+    <div class="menu-container">
+        <button onclick="showModeSelection()">בחר מצב משחק</button>
+        <div class="mode-selection" id="modeSelection">
+            <button onclick="startBattleRoyale()">באטל רויאל</button>
+            <button onclick="showDivisionSelection()">משחק קבוצתי</button>
+        </div>
+        <div class="division-selection" id="divisionSelection">
+            <button onclick="startTeamPlay('east-west')">מזרח נגד מערב</button>
+            <button onclick="startTeamPlay('north-south')">צפון נגד דרום</button>
+        </div>
+    </div>
+
+    <h1 id="gameTitle">המטוס טס</h1>
+    <div class="map-container" id="mapContainer">
+        <img src="worldmap-Photoroom.png" alt="מפת העולם" id="mapImage">
+    </div>
+    <div class="input-container">
+        <input type="text" id="countryInput" placeholder="הזן שם מדינה">
+        <button onclick="validateAndAddCountry()">שלח</button>
+    </div>
+    <div id="message"></div>
+    <div class="country-list" id="countryList"></div>
+    <div class="action-buttons">
+        <button id="addPointBtn" onclick="addPoint()" disabled>הוסף נקודה</button>
+        <button id="removePointBtn" onclick="removePoint()" disabled>הסר נקודה</button>
+        <button id="eliminateBtn" onclick="eliminateCountry()" disabled>מחק</button>
+        <button id="removeXBtn" onclick="removeElimination()" disabled>בטל מחיקה</button>
+    </div>
+
+    <footer class="game-footer">
+        <div class="footer-content">
+            <p> נוצר על ידי עדי טייף</p>
+        </div>
+        <br>
+        <div class="footer-content">
+            <button onclick="showInstructions()">הוראות משחק</button>
+            <button onclick="resetGame()">אפס משחק</button>
+        </div>
+        <div class="footer-attribution">
+            <p>מפת העולם במשחק נלקחה מוויקיפדיה: <a href="https://en.wikipedia.org/wiki/World_map#/media/File:Winkel_triple_projection_SW.jpg" target="_blank" rel="noopener noreferrer">מקור התמונה</a></p>
+        </div>
+    </footer>
+
+    <div class="modal" id="instructionsModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeInstructions()">×</span>
+            <h2>הוראות משחק</h2>
+            <div class="rules-content">
+                <img src="rules.png" alt="הוראות משחק" class="rules-image">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const countries = {
+            "אפגניסטן": { x: 65, y: 29 },
+            "אלבניה": { x: 54, y: 24 },
+            "אלג'יריה": { x: 48, y: 35 },
+            "אנדורה": { x: 48, y: 25 },
+            "אנגולה": { x: 54, y: 50 },
+            "אנטיגואה וברבודה": { x: 30, y: 40 },
+            "ארגנטינה": { x: 33, y: 60 },
+            "ארמניה": { x: 59, y: 27 },
+            "אוסטרליה": { x: 83, y: 64 },
+            "אוסטריה": { x: 51, y: 22 },
+            "אזרבייג'ן": { x: 60, y: 26 },
+            "בהאמס": { x: 29, y: 34 },
+            "בחריין": { x: 61, y: 34 },
+            "בנגלדש": { x: 72, y: 33 },
+            "ברבדוס": { x: 32, y: 40 },
+            "בלארוס": { x: 55, y: 18 },
+            "בלגיה": { x: 50, y: 20 },
+            "בליז": { x: 25, y: 36 },
+            "בנין": { x: 49, y: 43 },
+            "בהוטן": { x: 48, y: 39 },
+            "בוליביה": { x: 30, y: 57 },
+            "בוסניה והרצגובינה": { x: 51, y: 22 },
+            "בוטסואנה": { x: 53, y: 57 },
+            "ברזיל": { x: 33, y: 53 },
+            "ברוניי": { x: 78, y: 45 },
+            "בולגריה": { x: 54, y: 29 },
+            "בורקינה פאסו": { x: 44, y: 49 },
+            "בורונדי": { x: 55, y: 61 },
+            "קייפ ורדה": { x: 37, y: 38 },
+            "קמבודיה": { x: 75, y: 39 },
+            "קמרון": { x: 50, y: 42 },
+            "קנדה": { x: 25, y: 15 },
+            "הרפובליקה המרכז אפריקאית": { x: 50, y: 43 },
+            "צ'אד": { x: 52, y: 37 },
+            "צ'ילה": { x: 30, y: 65 },
+            "סין": { x: 73, y: 25 },
+            "קולומביה": { x: 28, y: 47 },
+            "קומורוס": { x: 59, y: 52 },
+            "קונגו": { x: 54, y: 50 },
+            "הרפובליקה הדמוקרטית של קונגו": { x: 45, y: 50 },
+            "קוסטה ריקה": { x: 23, y: 39 },
+            "חוף השנהב": { x: 48, y: 40 },
+            "קרואטיה": { x: 51, y: 23 },
+            "קובה": { x: 27, y: 37 },
+            "קפריסין": { x: 55, y: 28 },
+            "צ'כיה": { x: 54, y: 20 },
+            "דנמרק": { x: 50, y: 18 },
+            "ג'יבוטי": { x: 58, y: 40 },
+            "דומיניקה": { x: 31, y: 38 },
+            "רפובליקה דומיניקנית": { x: 25, y: 38 },
+            "אקוודור": { x: 28, y: 48 },
+            "מצרים": { x: 54, y: 35 },
+            "אל סלבדור": { x: 21, y: 39 },
+            "אריתריאה": { x: 55, y: 38 },
+            "אסטוניה": { x: 52, y: 16 },
+            "אסווטיני": { x: 54, y: 58 },
+            "אתיופיה": { x: 54, y: 43 },
+            "פיג'י": { x: 94, y: 59 },
+            "פינלנד": { x: 53, y: 12 },
+            "צרפת": { x: 48, y: 20 },
+            "גבון": { x: 53, y: 49 },
+            "גמביה": { x: 45, y: 39 },
+            "גאורגיה": { x: 58, y: 25 },
+            "גרמניה": { x: 50, y: 19 },
+            "גאנה": { x: 48, y: 40 },
+            "יוון": { x: 54, y: 26 },
+            "גואטמלה": { x: 22, y: 38 },
+            "גינאה": { x: 52, y: 46 },
+            "גיאנה": { x: 32, y: 47 },
+            "האיטי": { x: 28, y: 36 },
+            "הונדורס": { x: 25.5, y: 40 },
+            "הונגריה": { x: 53, y: 23 },
+            "איסלנד": { x: 42, y: 7 },
+            "הודו": { x: 70, y: 35 },
+            "אינדונזיה": { x: 79, y: 48 },
+            "איראן": { x: 63, y: 30 },
+            "עיראק": { x: 61, y: 30 },
+            "אירלנד": { x: 46, y: 19 },
+            "ישראל": { x: 58, y: 31 },
+            "איטליה": { x: 52, y: 25 },
+            "ג'מייקה": { x: 27.5, y: 38 },
+            "יפן": { x: 83.5, y: 26 },
+            "ירדן": { x: 59.5, y: 31 },
+            "קזחסטן": { x: 66, y: 24 },
+            "קניה": { x: 58, y: 46 },
+            "קוריאה הצפונית": { x: 77, y: 23 },
+            "קוריאה הדרומית": { x: 78, y: 27 },
+            "כווית": { x: 60, y: 32 },
+            "קירגיזסטן": { x: 65, y: 24 },
+            "לאוס": { x: 76, y: 38 },
+            "לטביה": { x: 53, y: 17 },
+            "לבנון": { x: 58, y: 28 },
+            "לסוטו": { x: 55, y: 60 },
+            "ליבריה": { x: 46, y:43.5 },
+            "לוב": { x: 53, y: 34 },
+            "ליכטנשטיין": { x: 50, y: 22 },
+            "ליטא": { x: 54, y: 18 },
+            "לוקסמבורג": { x: 50, y: 21 },
+            "מדגסקר": { x: 60, y: 58 },
+            "מלאווי": { x: 57, y: 55 },
+            "מלזיה": { x: 76, y: 45 },
+            "מלדיביים": { x: 68, y: 46 },
+            "מאלי": { x: 50, y: 38 },
+            "מלטה": { x: 52, y: 29 },
+            "מאוריטניה": { x: 47, y: 36 },
+            "מאוריציוס": { x: 63, y: 58 },
+            "מקסיקו": { x: 21, y: 35 },
+            "מולדובה": { x: 54, y: 21 },
+            "מונקו": { x: 50.5, y: 23 },
+            "מונגוליה": { x: 68, y: 20 },
+            "מונטנגרו": { x: 53, y: 23 },
+            "מרוקו": { x: 48, y: 32 },
+            "מיאנמר": { x: 74, y: 36 },
+            "נמיביה": { x: 53, y: 59 },
+            "נפאל": { x: 70, y: 31.5 },
+            "הולנד": { x: 50, y: 20 },
+            "ניו זילנד": { x: 88, y: 75 },
+            "ניקרגואה": { x: 24, y: 40 },
+            "ניז'ר": { x: 51, y: 38 },
+            "ניגריה": { x: 50, y: 42 },
+            "נורווגיה": { x: 49, y: 15 },
+            "עומאן": { x: 62.5, y: 37 },
+            "פקיסטן": { x: 65, y: 30 },
+            "פנמה": { x: 26, y: 43 },
+            "פפואה ניו גינאה": { x: 85, y: 52 },
+            "פרגוואי": { x: 32, y: 63 },
+            "פרו": { x: 29, y: 52 },
+            "פיליפינים": { x: 82, y: 41 },
+            "פולין": { x: 53, y: 20 },
+            "פורטוגל": { x: 45, y: 28 },
+            "קטאר": { x: 62, y: 34 },
+            "רומניה": { x: 54, y: 22 },
+            "רוסיה": { x: 69, y: 12 },
+            "סנט וינסנט והגרנדינים": { x: 28, y: 39.5 },
+            "סן מרינו": { x: 51, y: 24 },
+            "ערב הסעודית": { x: 58, y: 35 },
+            "סנגל": { x: 47, y: 37 },
+            "סרביה": { x: 53, y: 23 },
+            "סיישל": { x: 63.5, y: 50 },
+            "סינגפור": { x: 77, y: 48 },
+            "סלובקיה": { x: 52, y: 21 },
+            "סלובניה": { x: 52, y: 22 },
+            "סומליה": { x: 61, y: 44 },
+            "דרום אפריקה": { x: 53, y: 62 },
+            "ספרד": { x: 47.5, y: 27 },
+            "סרי לנקה": { x: 70, y: 43.5 },
+            "סודן": { x: 56.5, y: 39 },
+            "סורינאם": { x: 32, y: 46 },
+            "שוודיה": { x: 51, y: 14 },
+            "שווייץ": { x: 50, y: 22.5 },
+            "סוריה": { x: 60, y: 29 },
+            "טג'יקיסטן": { x: 65, y: 26 },
+            "תאילנד": { x: 74.5, y: 37 },
+            "תוניסיה": { x: 49, y: 29 },
+            "טורקיה": { x: 56.5, y: 26 },
+            "טורקמניסטן": { x: 63, y: 26 },
+            "אוגנדה": { x: 57, y: 45 },
+            "אוקראינה": { x: 55, y: 20 },
+            "איחוד האמירויות הערביות": { x: 56, y: 44 },
+            "אנגליה": { x: 48, y: 19 },
+            "ארצות הברית": { x: 21, y: 25 },
+            "אורוגוואי": { x: 36, y: 59 },
+            "אוזבקיסטן": { x: 68, y: 30 },
+            "ונצואלה": { x: 30, y: 45 },
+            "וייטנאם": { x: 77, y: 40 },
+            "תימן": { x: 61.5, y: 38 },
+            "זמביה": { x: 54.5, y: 54 },
+            "זימבבואה": { x: 54, y: 58 },
+        };
+
+        let gameMode = null; // 'battle-royale' or 'team-play'
+        let divisionType = null; // 'east-west' or 'north-south'
+        const addedCountries = new Map();
+        let selectedCountry = null;
+        let currentTeamTurn = 'team1'; // In Team Play, alternates between 'team1' (East/South) and 'team2' (West/North)
+        let lastPointCountry = null; // Track the last country that gained a point
+
+        function showModeSelection() {
+            document.getElementById('modeSelection').style.display = 'flex';
+            document.getElementById('divisionSelection').style.display = 'none';
+        }
+
+        function showDivisionSelection() {
+            document.getElementById('modeSelection').style.display = 'none';
+            document.getElementById('divisionSelection').style.display = 'flex';
+        }
+
+        function startBattleRoyale() {
+            gameMode = 'battle-royale';
+            document.getElementById('modeSelection').style.display = 'none';
+            document.getElementById('divisionSelection').style.display = 'none';
+            document.getElementById('gameTitle').textContent = ' המטוס טס - באטל רויאל';
+            resetGame();
+        }
+
+        function startTeamPlay(division) {
+            gameMode = 'team-play';
+            divisionType = division;
+            document.getElementById('modeSelection').style.display = 'none';
+            document.getElementById('divisionSelection').style.display = 'none';
+            document.getElementById('gameTitle').textContent = `המטוס טס  - משחק קבוצתי (${division === 'east-west' ? 'מזרח נגד מערב' : 'צפון נגד דרום'})`;
+            resetGame();
+            assignTeams();
+        }
+
+        function resetGame() {
+            addedCountries.clear();
+            selectedCountry = null;
+            currentTeamTurn = 'team1';
+            lastPointCountry = null;
+            document.getElementById('mapContainer').innerHTML = '<img src="worldmap-Photoroom.png" alt="מפת העולם" id="mapImage">';
+            document.getElementById('countryList').innerHTML = '';
+            document.getElementById('message').textContent = '';
+            document.getElementById('countryInput').value = '';
+            updateCountryList();
+            if (gameMode === 'team-play') {
+                assignTeams();
+            }
+        }
+
+        function assignTeams() {
+            addedCountries.forEach((data, country) => {
+                const { x, y } = countries[country];
+                if (divisionType === 'east-west') {
+                    data.team = x > 47 ? 'team1' : 'team2';
+                    data.label.classList.add(x > 47 ? 'team-east' : 'team-west');
+                } else {
+                    data.team = y <= 47 ? 'team1' : 'team2';
+                    data.label.classList.add(y <= 47 ? 'team-north' : 'team-south');
+                }
+                addedCountries.set(country, data);
+            });
+            updateCountryList();
+        }
+
+        function calculateTeamPoints() {
+            let team1Points = 0;
+            let team2Points = 0;
+
+            addedCountries.forEach((data) => {
+                if (!data.eliminated) {
+                    if (data.team === 'team1') team1Points += data.points;
+                    else if (data.team === 'team2') team2Points += data.points;
+                }
+            });
+
+            return { team1Points, team2Points };
+        }
+
+        function validateAndAddCountry() {
+            const input = document.getElementById("countryInput").value.trim();
+            const message = document.getElementById("message");
+            const mapContainer = document.getElementById("mapContainer");
+
+            if (!gameMode) {
+                message.textContent = "אנא בחר מצב משחק תחילה!";
+                message.style.color = "#ff4d4d";
+                return;
+            }
+
+            if (countries[input]) {
+                if (addedCountries.has(input)) {
+                    message.textContent = `${input} כבר הוספה למפה!`;
+                    message.style.color = "orange";
+                    return;
+                }
+
+                const label = document.createElement("div");
+                label.className = "country-label";
+                label.id = `label-${input}`;
+                label.textContent = input;
+                label.style.left = `${countries[input].x}%`;
+                label.style.top = `${countries[input].y}%`;
+                label.onclick = () => selectCountry(input);
+                mapContainer.appendChild(label);
+
+                const countryData = { points: 0, eliminated: false, label: label, team: null, streak: 0 };
+                addedCountries.set(input, countryData);
+
+                if (gameMode === 'team-play') {
+                    const { x, y } = countries[input];
+                    if (divisionType === 'east-west') {
+                        countryData.team = x > 47 ? 'team1' : 'team2';
+                        label.classList.add(x > 47 ? 'team-east' : 'team-west');
+                    } else {
+                        countryData.team = y <= 47 ? 'team1' : 'team2';
+                        label.classList.add(y <= 47 ? 'team-north' : 'team-south');
+                    }
+                    addedCountries.set(input, countryData);
+                }
+
+                message.textContent = `${input} היא מדינה נוספה למפה!`;
+                message.style.color = "#00ff00";
+
+                document.getElementById("countryInput").value = '';
+
+                updateCountryList();
+            } else {
+                message.textContent = `${input} אינה מדינה מוכרת. נסה שוב.`;
+                message.style.color = "#ff4d4d";
+            }
+        }
+
+        function updateCountryList() {
+            const countryList = document.getElementById("countryList");
+            countryList.innerHTML = "";
+
+            addedCountries.forEach((data, country) => {
+                // Update the map label
+                const label = data.label;
+                label.classList.remove("on-fire");
+                label.innerHTML = country; // Reset label content
+                if (country === selectedCountry) {
+                    label.classList.add("selected");
+                } else {
+                    label.classList.remove("selected");
+                }
+                if (data.eliminated) {
+                    label.classList.add("eliminated");
+                } else {
+                    label.classList.remove("eliminated");
+                }
+                if (data.streak >= 3) {
+                    console.log(`Streak detected for ${country} on map: ${data.streak}, applying fire emoji and color`);
+                    label.classList.add("on-fire");
+                    const fireSpan = document.createElement("span");
+                    fireSpan.className = "fire-emoji";
+                    fireSpan.textContent = "🔥";
+                    label.appendChild(fireSpan);
+                }
+
+                // Update the country list item
+                const item = document.createElement("div");
+                item.className = "country-item";
+                if (country === selectedCountry) {
+                    item.classList.add("selected");
+                }
+                if (gameMode === 'team-play' && data.team) {
+                    item.classList.add(data.team === 'team1' ? (divisionType === 'east-west' ? 'team-east' : 'team-north') : (divisionType === 'east-west' ? 'team-west' : 'team-south'));
+                }
+                let displayText = country;
+                if (gameMode === 'team-play' && data.team) {
+                    displayText = `[${data.team === 'team1' ? (divisionType === 'east-west' ? 'מזרח' : 'צפון') : (divisionType === 'east-west' ? 'מערב' : 'דרום')}] ${displayText}`;
+                }
+                const nameSpan = document.createElement("span");
+                nameSpan.className = data.eliminated ? 'eliminated' : '';
+                if (data.streak >= 3) {
+                    console.log(`Streak detected for ${country} in list: ${data.streak}, applying fire emoji and color`);
+                    nameSpan.classList.add("on-fire");
+                    const fireSpan = document.createElement("span");
+                    fireSpan.className = "fire-emoji";
+                    fireSpan.textContent = "🔥";
+                    nameSpan.appendChild(fireSpan);
+                }
+                nameSpan.insertAdjacentHTML('afterbegin', displayText);
+                item.appendChild(nameSpan);
+
+                const pointsSpan = document.createElement("span");
+                pointsSpan.textContent = `נקודות: ${data.points}`;
+                item.appendChild(pointsSpan);
+
+                item.onclick = () => selectCountry(country);
+                countryList.appendChild(item);
+            });
+
+            const addPointBtn = document.getElementById("addPointBtn");
+            const removePointBtn = document.getElementById("removePointBtn");
+            const eliminateBtn = document.getElementById("eliminateBtn");
+            const removeXBtn = document.getElementById("removeXBtn");
+
+            if (gameMode === 'team-play') {
+                addPointBtn.disabled = !selectedCountry || (selectedCountry && addedCountries.get(selectedCountry).eliminated);
+                removePointBtn.disabled = !selectedCountry || (selectedCountry && addedCountries.get(selectedCountry).eliminated) || (selectedCountry && addedCountries.get(selectedCountry).points <= 0);
+                eliminateBtn.disabled = !selectedCountry || (selectedCountry && addedCountries.get(selectedCountry).eliminated) || (selectedCountry && addedCountries.get(selectedCountry).team === currentTeamTurn);
+                removeXBtn.disabled = !selectedCountry || (selectedCountry && !addedCountries.get(selectedCountry).eliminated);
+
+                const { team1Points, team2Points } = calculateTeamPoints();
+                const message = document.getElementById("message");
+                message.innerHTML = `
+                    <span style="color: #ff6347;">${divisionType === 'east-west' ? 'מזרח' : 'צפון'}: ${team1Points} נקודות</span> | 
+                    <span style="color: #87cefa;">${divisionType === 'east-west' ? 'מערב' : 'דרום'}: ${team2Points} נקודות</span>`;
+            } else {
+                addPointBtn.disabled = !selectedCountry || (selectedCountry && addedCountries.get(selectedCountry).eliminated);
+                removePointBtn.disabled = !selectedCountry || (selectedCountry && addedCountries.get(selectedCountry).eliminated) || (selectedCountry && addedCountries.get(selectedCountry).points <= 0);
+                eliminateBtn.disabled = !selectedCountry || (selectedCountry && addedCountries.get(selectedCountry).eliminated);
+                removeXBtn.disabled = !selectedCountry || (selectedCountry && !addedCountries.get(selectedCountry).eliminated);
+            }
+        }
+
+        function selectCountry(country) {
+            selectedCountry = country;
+            updateCountryList();
+        }
+
+        function addPoint() {
+            if (!selectedCountry || addedCountries.get(selectedCountry).eliminated) return;
+
+            const data = addedCountries.get(selectedCountry);
+
+            console.log(`Adding point to ${selectedCountry}, Last point country: ${lastPointCountry}, Current streak: ${data.streak}`);
+
+            if (lastPointCountry === selectedCountry) {
+                data.streak += 1;
+                console.log(`Incremented streak for ${selectedCountry} to ${data.streak}`);
+            } else {
+                console.log(`Resetting streaks, starting new streak for ${selectedCountry}`);
+                addedCountries.forEach((countryData, country) => {
+                    countryData.streak = 0;
+                    addedCountries.set(country, countryData);
+                });
+                data.streak = 1;
+            }
+
+            lastPointCountry = selectedCountry;
+            data.points += 1;
+            addedCountries.set(selectedCountry, data);
+            console.log(`After update - Points: ${data.points}, Streak: ${data.streak}`);
+            updateCountryList();
+        }
+
+        function removePoint() {
+            if (!selectedCountry || addedCountries.get(selectedCountry).eliminated || addedCountries.get(selectedCountry).points <= 0) {
+                console.log(`Cannot remove point from ${selectedCountry}. Conditions not met: selected=${selectedCountry}, eliminated=${addedCountries.get(selectedCountry)?.eliminated}, points=${addedCountries.get(selectedCountry)?.points}`);
+                return;
+            }
+
+            console.log(`Removing point from ${selectedCountry}`);
+            const data = addedCountries.get(selectedCountry);
+            data.points -= 1;
+            data.streak = 0;
+            lastPointCountry = null;
+            addedCountries.set(selectedCountry, data);
+            updateCountryList();
+        }
+
+        function eliminateCountry() {
+            if (!selectedCountry || addedCountries.get(selectedCountry).eliminated) {
+                console.log(`Cannot eliminate ${selectedCountry}. Conditions not met: selected=${selectedCountry}, eliminated=${addedCountries.get(selectedCountry)?.eliminated}`);
+                return;
+            }
+
+            if (gameMode === 'team-play' && addedCountries.get(selectedCountry).team === currentTeamTurn) {
+                document.getElementById("message").textContent = "לא ניתן למחוק מדינה מהקבוצה שלך!";
+                return;
+            }
+
+            console.log(`Eliminating ${selectedCountry}`);
+            const data = addedCountries.get(selectedCountry);
+            data.eliminated = true;
+            data.streak = 0;
+            lastPointCountry = null;
+            data.label.classList.add("eliminated");
+            addedCountries.set(selectedCountry, data);
+            selectedCountry = null;
+
+            if (gameMode === 'team-play') {
+                currentTeamTurn = currentTeamTurn === 'team1' ? 'team2' : 'team1';
+            }
+
+            updateCountryList();
+        }
+
+        function removeElimination() {
+            if (!selectedCountry || !addedCountries.get(selectedCountry).eliminated) {
+                console.log(`Cannot remove elimination for ${selectedCountry}. Conditions not met: selected=${selectedCountry}, eliminated=${addedCountries.get(selectedCountry)?.eliminated}`);
+                return;
+            }
+
+            console.log(`Removing elimination for ${selectedCountry}`);
+            const data = addedCountries.get(selectedCountry);
+            data.eliminated = false;
+            data.streak = 0;
+            lastPointCountry = null;
+            data.label.classList.remove("eliminated");
+            data.label.textContent = selectedCountry;
+            addedCountries.set(selectedCountry, data);
+
+            if (gameMode === 'team-play') {
+                currentTeamTurn = currentTeamTurn === 'team1' ? 'team2' : 'team1';
+            }
+
+            updateCountryList();
+        }
+
+        document.getElementById("countryInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                validateAndAddCountry();
+            }
+        });
+
+        function showInstructions() {
+            document.getElementById("instructionsModal").style.display = "flex";
+        }
+
+        function closeInstructions() {
+            document.getElementById("instructionsModal").style.display = "none";
+        }
+
+        document.getElementById("instructionsModal").addEventListener("click", function(event) {
+            if (event.target === this) {
+                closeInstructions();
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'92fd0232889e32e7',t:'MTc0NDU2ODc1My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>
